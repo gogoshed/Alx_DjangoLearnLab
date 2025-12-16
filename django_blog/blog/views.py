@@ -65,11 +65,19 @@ from .models import Post
 from .forms import PostForm
 
 
+
+
+
+
+
+
+
+
+
 class PostListView(ListView):
     model = Post
     template_name = 'listing.html'
     context_object_name = 'posts'
-    ordering = ['-id']
 
 
 class PostDetailView(DetailView):
@@ -103,7 +111,4 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'deleting.html'
-    success_url = reverse_lazy('post-list')
-
-    def test_func(self):
-        return self.request.user == self.get_object().author
+    success_url = '/'
