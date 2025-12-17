@@ -136,3 +136,6 @@ STATICFILES_DIRS = [
 TEMPLATES[0]['DIRS'] = [
     BASE_DIR / "blog" / "templates",
 ]
+
+
+TEMPLATES[0]['APP_DIRS'] = True

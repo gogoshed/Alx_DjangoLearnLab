@@ -1,0 +1,11 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<h2>All Comments</h2>
+
+{% for comment in comments %}
+    <p>{{ comment.body }} — {{ comment.author }}</p>
+{% empty %}
+    <p>No comments available.</p>
+{% endfor %}
+{% endblock %}
