@@ -29,3 +29,26 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content']
+
+
+
+
+
+# blog/forms.py
+
+from django import forms                # <-- MUST be here
+from .models import Post, Comment
+from taggit.forms import TagWidget      # only if using django-taggit
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'tags']  # include 'tags' if using tagging
+        widgets = {
+            'tags': TagWidget(),                  # shows tag input in form
+        }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['author', 'body']

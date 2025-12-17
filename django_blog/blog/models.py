@@ -56,3 +56,18 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+
+
+
+
+
+
+
+from taggit.managers import TaggableManager
+
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    # Other fields like author, created_at, etc.
+    tags = TaggableManager()  # This enables tagging

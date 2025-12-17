@@ -6,6 +6,13 @@
     <title>{% block title %}Django Blog{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'blog/style.css' %}">
 </head>
+
+<form method="GET" action="{% url 'search_posts' %}">
+    <input type="text" name="q" placeholder="Search posts...">
+    <button type="submit">Search</button>
+</form>
+
+
 <body>
     <header>
         <h1><a href="{% url 'post_list' %}">My Blog</a></h1>
