@@ -80,3 +80,16 @@ urlpatterns = [
     path('search/', views.search_posts, name='search_posts'),
     path('tags/<slug:tag_slug>/', views.posts_by_tag, name='posts_by_tag'),
 ]
+
+
+
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('post/<int:pk>/', views.post_detail, name='post_detail'),
+    path('search/', views.search_posts, name='search_posts'),
+    path('tags/<slug:tag_slug>/', views.PostByTagListView.as_view(), name='posts_by_tag'),  # CBV here
+]
