@@ -143,3 +143,19 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
+
+
+
+
+
+@login_required
+def add_comment(request, post_id):
+    # logic to add comment
+
+@login_required
+def edit_comment(request, comment_id):
+    # logic to edit comment
+
+@login_required
+def delete_comment(request, comment_id):
+    # logic to delete comment
