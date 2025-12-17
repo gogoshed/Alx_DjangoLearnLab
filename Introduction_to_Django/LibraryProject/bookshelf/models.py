@@ -9,3 +9,13 @@ class Book(models.Model):
         return self.title
 
 
+from django.contrib import admin
+from .models import Book
+
+# Register Book model with admin using ModelAdmin
+class BookAdmin(admin.ModelAdmin):
+    list_display = ('title', 'author', 'publication_year')  # shows these fields in admin list view
+    list_filter = ('author', 'publication_year')            # enables filter sidebar
+    search_fields = ('title', 'author')                     # enables search box
+
+admin.site.register(Book, BookAdmin)
