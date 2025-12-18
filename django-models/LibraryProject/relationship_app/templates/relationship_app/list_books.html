@@ -4,7 +4,15 @@
     <title>List of Books</title>
 </head>
 <body>
-    <h1>Books Available:</h1>
+    <h1>All Books</h1>
+    <ul>
+    {% for book in books %}
+        <li>{{ book.title }} by {{ book.author }}</li>
+    {% empty %}
+        <li>No books found.</li>
+    {% endfor %}
+    </ul>
+        <h1>Books Available:</h1>
     <ul>
         {% for book in books %}
             <li>{{ book.title }} by {{ book.author.name }}</li>
@@ -12,3 +20,7 @@
     </ul>
 </body>
 </html>
+
+
+
+
