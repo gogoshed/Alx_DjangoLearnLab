@@ -87,3 +87,54 @@ def unlike_post(request, pk):
     return Response({"detail": "You haven't liked this post."}, status=status.HTTP_400_BAD_REQUEST)
 
 
+from rest_framework import status, permissions
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from django.shortcuts import get_object_or_404
+
+from .models import Post, Like
+from notifications.models import Notification  # if you want to create notifications
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def like_post(request, pk):
+    """
+    Like a post. If already liked, do nothing.
+    """
+    post = get_object_or_404(Post, pk=pk)
+    user = request.user
+
+    # Check if user already liked the post
+    if Like.objects.filter(post=post, user=user).exists():
+        return Response({'detail': 'Already liked.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Create the like
+    Like.objects.create(post=post, user=user)
+
+    # Optional: create a notification
+    Notification.objects.create(
+        recipient=post.author,
+        actor=user,
+        verb='liked',
+        target=post
+    )
+
+    return Response({'detail': 'Post liked successfully.'}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def unlike_post(request, pk):
+    """
+    Unlike a post. If not liked, return an error.
+    """
+    post = get_object_or_404(Post, pk=pk)
+    user = request.user
+
+    like = Like.objects.filter(post=post, user=user).first()
+    if not like:
+        return Response({'detail': 'You have not liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    like.delete()
+    return Response({'detail': 'Post unliked successfully.'}, status=status.HTTP_200_OK)
