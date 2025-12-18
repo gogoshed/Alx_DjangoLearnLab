@@ -55,11 +55,12 @@ ROOT_URLCONF = 'LibraryProject.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',  # required!
+        'DIRS': [BASE_DIR / 'relationship_app' / 'templates'],         # your templates folder
+        'APP_DIRS': True,                                              # automatically find templates in apps
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -67,6 +68,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'LibraryProject.wsgi.application'
 
@@ -118,18 +120,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-TEMPLATES = [
-    {
-        ...
-        'DIRS': [BASE_DIR / 'relationship_app' / 'templates'],
-        ...
-    },
-]
-from django.urls import path, include
+# TEMPLATES = [
+#     {
+        
+#         'DIRS': [BASE_DIR / 'relationship_app' / 'templates'],
+        
+#     },
+# ]
 
-urlpatterns = [
-    path("", include("relationship_app.urls")),
-]
+
+
 
 
 

@@ -1,35 +1,42 @@
+# relationship_app/urls.py
 from django.urls import path
-from .views import list_books, LibraryDetailView
-from django.urls import path
-from .views import CustomLoginView, CustomLogoutView, register
+from . import views  # import all views as a module
+from django.urls import path, include
 
 urlpatterns = [
-    path("books/", list_books, name="list_books"),
-    path("libraries/<int:pk>/", LibraryDetailView.as_view(), name="library_detail"),
-    path('login/', CustomLoginView.as_view(), name='login'),
-    path('logout/', CustomLogoutView.as_view(), name='logout'),
-    path('register/', register, name='register'),
+    # Role-Based Views
+    path('admin/', views.admin_view, name='admin_view'),
+    path('librarian/', views.librarian_view, name='librarian_view'),
+    path('member/', views.member_view, name='member_view'),
+
+    # Book/List Views
+    path('books/', views.list_books, name='list_books'),
+    path('libraries/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
+
+    # Auth Views
+    path('register/', views.register, name='register'),
+    path('login/', views.CustomLoginView.as_view(), name='login'),
+    path('logout/', views.CustomLogoutView.as_view(), name='logout'),
+ 
+    path("", include("relationship_app.urls")),
 ]
-
-
+# relationship_app/urls.py
 from django.urls import path
-from django.contrib.auth.views import LoginView, LogoutView
-from . import views
+from . import views  # import all views as a module
 
 urlpatterns = [
-    path(
-        'login/',
-        LoginView.as_view(template_name='relationship_app/login.html'),
-        name='login'
-    ),
-    path(
-        'logout/',
-        LogoutView.as_view(template_name='relationship_app/logout.html'),
-        name='logout'
-    ),
-    path(
-        'register/',
-        views.register,
-        name='register'
-    ),
+    # Role-Based Views
+    path('admin/', views.admin_view, name='admin_view'),
+    path('librarian/', views.librarian_view, name='librarian_view'),
+    path('member/', views.member_view, name='member_view'),
+
+    # Book/List Views
+    path('books/', views.list_books, name='list_books'),
+    path('libraries/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
+
+    # Auth Views
+    path('register/', views.register, name='register'),
+    path('login/', views.CustomLoginView.as_view(), name='login'),
+    path('logout/', views.CustomLogoutView.as_view(), name='logout'),
 ]
+
