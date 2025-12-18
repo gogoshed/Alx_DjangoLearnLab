@@ -1,30 +1,30 @@
 # relationship_app/views.py
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import user_passes_test
 from django.views.generic.detail import DetailView
-
-# Import models safely inside functions only if needed
 from .models import UserProfile, Library, Book
 
-
 # -----------------------
-# Role-Based Views
+# Role-Based Checks
 # -----------------------
 
 def is_admin(user):
     return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
 
-
 def is_librarian(user):
     return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
-
 
 def is_member(user):
     return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
 
+
+# -----------------------
+# Role-Based Views
+# -----------------------
 
 @user_passes_test(is_admin)
 def admin_view(request):
@@ -46,7 +46,6 @@ def member_view(request):
 # -----------------------
 
 def list_books(request):
-    # Query database inside function, safe
     books = Book.objects.all()
     return render(request, "relationship_app/list_books.html", {"books": books})
 
@@ -58,7 +57,7 @@ class LibraryDetailView(DetailView):
 
 
 # -----------------------
-# Auth Views
+# Authentication Views
 # -----------------------
 
 def register(request):
@@ -66,10 +65,11 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # log in automatically
-            return redirect('login')
+            login(request, user)  # automatically log in after registration
+            return redirect('login')  # redirect to login page
     else:
         form = UserCreationForm()
+
     return render(request, 'relationship_app/register.html', {'form': form})
 
 

@@ -33,7 +33,8 @@ urlpatterns = [
     # Book/List Views
     path('books/', views.list_books, name='list_books'),
     path('libraries/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
-
+    
+    path('admin/', views.admin_view, name='admin_view'),
     # Auth Views
     path('register/', views.register, name='register'),
     path('login/', views.CustomLoginView.as_view(), name='login'),
