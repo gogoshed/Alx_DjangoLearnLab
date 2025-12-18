@@ -6,6 +6,7 @@ from rest_framework.pagination import PageNumberPagination
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly
+from rest_framework import generics
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -130,6 +131,46 @@ def unlike_post(request, pk):
     Unlike a post. If not liked, return an error.
     """
     post = get_object_or_404(Post, pk=pk)
+    user = request.user
+
+    like = Like.objects.filter(post=post, user=user).first()
+    if not like:
+        return Response({'detail': 'You have not liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    like.delete()
+    return Response({'detail': 'Post unliked successfully.'}, status=status.HTTP_200_OK)
+
+
+
+post = generics.get_object_or_404(Post, pk=pk)
+
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def like_post(request, pk):
+    post = generics.get_object_or_404(Post, pk=pk)
+    user = request.user
+
+    if Like.objects.filter(post=post, user=user).exists():
+        return Response({'detail': 'Already liked.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    Like.objects.create(post=post, user=user)
+
+    Notification.objects.create(
+        recipient=post.author,
+        actor=user,
+        verb='liked',
+        target=post
+    )
+
+    return Response({'detail': 'Post liked successfully.'}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def unlike_post(request, pk):
+    post = generics.get_object_or_404(Post, pk=pk)
     user = request.user
 
     like = Like.objects.filter(post=post, user=user).first()
