@@ -1,13 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser, Group, Permission
 
-# Create your models here.
-from django.contrib.auth.models import AbstractUser
-
-
-class User(AbstractUser):
+class CustomUser(AbstractUser):
+    """
+    Custom user model with profile picture, bio, and followers/following.
+    Also overrides groups and user_permissions to avoid reverse accessor clashes.
+    """
     bio = models.TextField(blank=True)
     profile_picture = models.ImageField(upload_to='profiles/', blank=True, null=True)
 
+    # Followers / following system
     followers = models.ManyToManyField(
         'self',
         symmetrical=False,
@@ -15,12 +17,19 @@ class User(AbstractUser):
         blank=True
     )
 
+    # Override groups and permissions to avoid clashes
+    groups = models.ManyToManyField(
+        Group,
+        related_name='customuser_set',  # avoid clash with default User
+        blank=True,
+        help_text='The groups this user belongs to.'
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='customuser_set',  # avoid clash with default User
+        blank=True,
+        help_text='Specific permissions for this user.'
+    )
+
     def __str__(self):
         return self.username
-class CustomUser(AbstractUser):
-    following = models.ManyToManyField(
-        'self',
-        symmetrical=False,
-        related_name='followers',
-        blank=True
-    )

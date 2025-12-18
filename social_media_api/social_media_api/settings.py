@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'accounts',
 
     'posts',
+    'notifications',  # <-- Add this line
+
 ]
 
 MIDDLEWARE = [
@@ -135,3 +137,4 @@ REST_FRAMEWORK = {
     ],
 }
 
+AUTH_USER_MODEL = 'accounts.CustomUser'
