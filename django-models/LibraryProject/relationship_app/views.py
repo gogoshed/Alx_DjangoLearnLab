@@ -66,3 +66,29 @@ class CustomLoginView(LoginView):
 
 class CustomLogoutView(LogoutView):
     template_name = 'relationship_app/logout.html'
+
+
+
+
+
+# relationship_app/views.py
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test
+
+# -----------------------
+# Role check function
+# -----------------------
+def is_member(user):
+    return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
+
+# -----------------------
+# Member view
+# -----------------------
+@user_passes_test(is_member)
+def member_view(request):
+    """
+    View accessible only to users with the 'Member' role.
+    Renders a member-specific page.
+    """
+    return render(request, 'relationship_app/member_view.html')
