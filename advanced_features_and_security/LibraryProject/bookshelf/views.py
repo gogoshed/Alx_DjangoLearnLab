@@ -38,3 +38,18 @@ def edit_book(request, pk):
     else:
         form = BookForm(instance=book)
     return
+
+
+
+from .forms import ExampleForm
+
+@permission_required('bookshelf.can_create', raise_exception=True)
+def create_book(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('book_list')
+    else:
+        form = ExampleForm()
+    return render(request, 'bookshelf/book_form.html', {'form': form})
