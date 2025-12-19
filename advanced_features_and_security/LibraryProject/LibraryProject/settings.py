@@ -138,3 +138,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
+
+
+# Use the custom user model
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
