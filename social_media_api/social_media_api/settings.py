@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
+import os
 
 from pathlib import Path
 
@@ -159,9 +160,28 @@ SESSION_COOKIE_SECURE = True
 
 import dj_database_url
 
+PORT = os.getenv("PORT")
+
+
 DATABASES = {
     'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
 }
+
+
+
+
+
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=f"postgres://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('PORT')}/{os.getenv('DB_NAME')}",
+#         conn_max_age=600,
+#         ssl_require=True,
+#     )
+# }
+
+
+
 
 
 # settings.py
