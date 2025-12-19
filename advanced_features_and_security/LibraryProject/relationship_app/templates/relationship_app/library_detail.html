@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library Detail</title>
+</head>
+<body>
+    <h1>Library: {{ library.name }}</h1>
+    <ul>
+        {% for book in library.books.all %}
+            <li>{{ book.title }} by {{ book.author.name }}</li>
+        {% endfor %}
+    </ul>
+
+        <h1>{{ library.name }}</h1>
+        <p>Address: {{ library.address }}</p>
+
+        <h2>Books in this library:</h2>
+        <ul>
+        {% for book in library.book_set.all %}
+            <li>{{ book.title }} by {{ book.author }}</li>
+        {% empty %}
+            <li>No books available.</li>
+        {% endfor %}
+        </ul>
+
+
+
+
+
+
+</body>
+</html>
